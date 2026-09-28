@@ -78,8 +78,11 @@ const server = http.createServer(async (request, response) => {
 
   try {
     const input = await readJson(request);
-    const { action, context, closeness, recentTalk, bandwidth } = input;
-    if (!actions.has(action) || typeof context !== 'string' || context.length > 3000 ||
+    const { action, context, mbti, closeness, recentTalk, bandwidth } = input;
+    const contextFields = ['currentSituation', 'pastExperiences', 'recentObservations'];
+    if (!actions.has(action) || !context || typeof context !== 'object' || Array.isArray(context) ||
+        !contextFields.every((field) => typeof context[field] === 'string' && context[field].length <= 1000) ||
+        typeof mbti !== 'string' || (mbti !== '' && !/^[EI][NS][TF][JP]$/.test(mbti)) ||
         ![closeness, recentTalk, bandwidth].every((value) => Number.isInteger(value) && value >= 0 && value <= 100)) {
       send(response, 400, { error: '입력값을 확인해 주세요.' });
       return;
@@ -89,7 +92,8 @@ const server = http.createServer(async (request, response) => {
       return;
     }
 
-    const key = JSON.stringify(input);
+    // Free-text context and MBTI stay local until external sharing is explicitly approved.
+    const key = JSON.stringify({ action, closeness, recentTalk, bandwidth });
     if (cache.has(key)) {
       send(response, 200, cache.get(key));
       return;
@@ -104,7 +108,6 @@ const server = http.createServer(async (request, response) => {
         body: JSON.stringify({
           model: 'jev-1.13.0',
           state: {
-            relationship_context: context || 'No extra context provided.',
             action_under_consideration: {
               hello: 'Send a light, friendly message',
               coffee: 'Suggest meeting for coffee',
@@ -118,7 +121,7 @@ const server = http.createServer(async (request, response) => {
           questions: {
             reaction: {
               type: 'choice',
-              instructions: 'Given only the supplied context, which immediate reaction is most plausible? Treat missing evidence as uncertainty. This is a scenario estimate, not a prediction of a real person.',
+              instructions: 'Given only the supplied action and slider values, which immediate reaction is most plausible? Treat missing evidence as uncertainty. This is a scenario estimate, not a prediction of a real person.',
               criteria: {
                 warm: 'Warm, interested, or pleased',
                 neutral: 'Uncertain, reserved, or needs time',
