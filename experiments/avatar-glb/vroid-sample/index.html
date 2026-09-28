@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:,">
+  <title>VRoid 아바타 PoC</title>
+</head>
+<body>
+  <main>
+    <header><span class="tag">VRoid Studio · 실제 VRM 모델</span><h1>아바타 감정 표현 PoC</h1><p>검은 머리 여성 캐릭터 · Sendagaya Shino (VRoid 공식 CC0 샘플)</p></header>
+    <div class="layout">
+      <div class="stage" id="stage"><div id="viewer"></div><div class="tear-overlay" aria-hidden="true"><i></i><i></i></div><div class="loading" id="loading">3D 모델을 불러오는 중…</div></div>
+      <section class="controls" aria-label="아바타 동작 제어">
+        <span class="tag">LIVE CONTROL</span>
+        <h2 id="mood-title">준비 중</h2>
+        <p id="mood-description">모델을 불러오면 버튼으로 표정과 몸짓을 바꿀 수 있습니다.</p>
+        <div class="buttons">
+          <button data-mood="happy" disabled>😊 웃기</button>
+          <button data-mood="cry" disabled>😢 울기</button>
+          <button data-mood="dance" disabled>💃 기뻐하며 춤추기</button>
+          <button data-mood="neutral" disabled>↺ 기본 표정</button>
+        </div>
+        <p class="hint">마우스로 드래그하면 캐릭터를 돌려볼 수 있습니다.</p>
+      </section>
+    </div>
+    <footer>모델: VRoid Studio 공식 샘플 Sendagaya Shino · CC0 · 렌더링: Three.js / three-vrm</footer>
+  </main>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

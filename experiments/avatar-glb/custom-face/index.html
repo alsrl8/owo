@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:,">
+  <title>커스텀 여성형 얼굴 GLB PoC</title>
+</head>
+<body>
+  <main>
+    <header><span class="eyebrow">CUSTOM GLB · THREE.JS</span><h1>미나, 표정이 있는 3D 얼굴</h1><p>직접 만든 여성형 얼굴 모델과 두 가지 얼굴 변형값을 브라우저에서 제어합니다.</p></header>
+    <div class="layout">
+      <section class="stage" aria-label="커스텀 3D 얼굴 보기"><div id="viewer"></div><span class="model-badge">직접 제작한 GLB · 약 306KB</span><div id="loading">모델을 불러오는 중…</div></section>
+      <section class="panel">
+        <span class="eyebrow">EXPRESSION LAB</span>
+        <h2 id="state-title">준비 중</h2>
+        <p id="state-description">얼굴 모델을 불러오고 있습니다.</p>
+        <div class="buttons">
+          <button type="button" data-expression="neutral" disabled>기본 얼굴</button>
+          <button type="button" data-expression="happy" disabled>웃기</button>
+          <button type="button" data-expression="sad" disabled>울기</button>
+        </div>
+        <label for="strength">표정 강도 <output id="strength-value">100%</output></label>
+        <input id="strength" type="range" min="0" max="100" value="100" disabled>
+        <a class="download" href="/models/mina-face.glb" download="mina-face.glb">GLB 모델 다운로드</a>
+        <p class="hint">드래그해서 얼굴을 회전할 수 있습니다. 표정은 모델 안의 블렌드셰이프를 직접 조절합니다.</p>
+      </section>
+    </div>
+  </main>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
