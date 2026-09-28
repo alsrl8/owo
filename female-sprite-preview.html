@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>OWO · 여성 캐릭터 스프라이트</title>
+  <style>
+    :root{font-family:Arial,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:#2d2736;background:#f8f5f9}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;padding:22px;background:radial-gradient(circle at 10% 15%,#f6e1eb,transparent 32%),radial-gradient(circle at 90% 85%,#dce8ff,transparent 36%),#f8f5f9}
+    main{max-width:1100px;margin:0 auto}
+    header{margin:10px 0 20px}h1{margin:0;font-size:clamp(25px,4vw,38px);letter-spacing:-.06em}header p{color:#776d7e;margin:7px 0 0;line-height:1.5}
+    .layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(310px,440px);gap:18px;align-items:start}
+    .card{background:#fff;border:1px solid #ede6f0;border-radius:25px;box-shadow:0 15px 48px #3f294411;padding:20px}
+    .stage{display:grid;place-items:center;aspect-ratio:1;margin-bottom:16px;overflow:hidden;border-radius:18px;background:radial-gradient(circle at 50% 74%,#fff 0,#fbf7fc 45%,#f3edf7 100%)}
+    canvas{width:100%;max-width:540px;height:auto;display:block;image-rendering:pixelated}
+    .controls{display:flex;align-items:center;gap:13px;flex-wrap:wrap}
+    button{font:inherit;cursor:pointer}
+    button:focus-visible,input:focus-visible{outline:3px solid #a889dd;outline-offset:3px}
+    #toggle{border:0;background:#463a58;color:#fff;border-radius:11px;padding:10px 15px;font-weight:700}
+    .controls label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#62566d}
+    input{width:125px;accent-color:#8f6db6}output,#frame{font-size:13px;color:#766a80;font-variant-numeric:tabular-nums}
+    #frame{margin-left:auto}
+    .title-row{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:13px}.title-row h2{font-size:18px;margin:0;letter-spacing:-.04em}.count{font-size:12px;color:#96899b}
+    .choices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    .choice{min-height:64px;border:1px solid #e9e2ed;border-radius:12px;background:#fbf9fc;color:#554a60;font-size:13px;font-weight:700;padding:8px 3px}
+    .choice:hover{border-color:#bda7d5;background:#f8f1ff}.choice[aria-pressed="true"]{background:#eee5fa;border-color:#9c78cb;color:#573779;box-shadow:inset 0 0 0 1px #9c78cb}
+    .styles{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+    .style{border:1px solid #d8c8e5;border-radius:999px;background:#fff;color:#62516c;padding:9px 15px;font-size:14px;font-weight:700}
+    .style[aria-pressed="true"]{background:#463a58;border-color:#463a58;color:#fff}
+    .help{margin:15px 0 0;font-size:12px;line-height:1.55;color:#908597}
+    @media(max-width:780px){.layout{grid-template-columns:1fr}.choices{grid-template-columns:repeat(4,minmax(0,1fr))}}
+    @media(max-width:430px){body{padding:12px}.card{padding:14px;border-radius:19px}.choices{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.choice{min-height:56px;font-size:12px}.controls{gap:9px}}
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>여성 캐릭터 · 반응 16종</h1>
+      <p>두 가지 캐릭터 스타일. 표정과 몸짓마다 4프레임 도트 스프라이트가 움직여요.</p>
+    </header>
+    <div class="styles" aria-label="캐릭터 스타일 선택">
+      <button class="style" type="button" data-style="sporty-bob" aria-pressed="true">스포티 단발</button>
+      <button class="style" type="button" data-style="female" aria-pressed="false">긴 검은 머리</button>
+    </div>
+    <div class="layout">
+      <section class="card" aria-label="스프라이트 재생 화면">
+        <div class="stage"><canvas id="sprite" width="620" height="620" role="img" aria-label="선택한 캐릭터 반응 애니메이션"></canvas></div>
+        <div class="controls">
+          <button id="toggle" type="button" aria-pressed="true">일시정지</button>
+          <label for="speed">속도 <input id="speed" type="range" min="2" max="10" value="5"><output id="fps" for="speed">5 FPS</output></label>
+          <span id="frame">1 / 4</span>
+        </div>
+      </section>
+      <section class="card" aria-label="반응 선택">
+        <div class="title-row"><h2>표정과 상황</h2><span class="count">16개 · 각 4프레임</span></div>
+        <div class="choices" id="choices"></div>
+        <p class="help">반응을 누르면 해당 4프레임 스프라이트가 반복 재생돼요.</p>
+      </section>
+    </div>
+  </main>
+  <script>
+    const reactions = [
+      ['01-idle', '기본'], ['02-smile', '미소'], ['03-laugh', '웃음'], ['04-shy', '수줍음'],
+      ['05-excited', '설렘'], ['06-curious', '호기심'], ['07-surprised', '놀람'], ['08-thinking', '생각'],
+      ['09-uncertain', '망설임'], ['10-nervous', '긴장'], ['11-uncomfortable', '불편함'], ['12-annoyed', '짜증'],
+      ['13-sad', '슬픔'], ['14-crying', '울음'], ['15-wave', '인사'], ['16-turn-away', '돌아섬']
+    ];
+    const canvas = document.querySelector('#sprite');
+    const context = canvas.getContext('2d');
+    const choices = document.querySelector('#choices');
+    const toggle = document.querySelector('#toggle');
+    const speed = document.querySelector('#speed');
+    const fps = document.querySelector('#fps');
+    const frameLabel = document.querySelector('#frame');
+    const styleButtons = document.querySelectorAll('.style');
+    let style = 'sporty-bob';
+    let selectedReaction = 0;
+    let image;
+    let frames = [];
+    let current = 0;
+    let last = 0;
+    let requestId = 0;
+    let playing = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function extractFrames(sourceImage) {
+      const source = document.createElement('canvas');
+      source.width = sourceImage.naturalWidth;
+      source.height = sourceImage.naturalHeight;
+      const sourceContext = source.getContext('2d', {willReadFrequently: true});
+      sourceContext.drawImage(sourceImage, 0, 0);
+      const pixels = sourceContext.getImageData(0, 0, source.width, source.height).data;
+      const splitX = Math.floor(source.width / 2);
+      const splitY = Math.floor(source.height / 2);
+      const boxes = [];
+      for (let row = 0; row < 2; row++) {
+        for (let col = 0; col < 2; col++) {
+          const left = col ? splitX : 0;
+          const right = col ? source.width : splitX;
+          const top = row ? splitY : 0;
+          const bottom = row ? source.height : splitY;
+          let minX = right, minY = bottom, maxX = left - 1, maxY = top - 1;
+          for (let y = top; y < bottom; y++) {
+            for (let x = left; x < right; x++) {
+              if (pixels[(y * source.width + x) * 4 + 3] < 32) continue;
+              minX = Math.min(minX, x);
+              minY = Math.min(minY, y);
+              maxX = Math.max(maxX, x);
+              maxY = Math.max(maxY, y);
+            }
+          }
+          if (maxX >= minX && maxY >= minY) {
+            boxes.push({x: minX, y: minY, width: maxX - minX + 1, height: maxY - minY + 1});
+          }
+        }
+      }
+      return boxes;
+    }
+
+    function draw() {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      if (!image || !frames[current]) return;
+      const frame = frames[current];
+      const scale = Math.min(1, 530 / frame.width, 530 / frame.height);
+      const width = frame.width * scale;
+      const height = frame.height * scale;
+      context.imageSmoothingEnabled = false;
+      context.drawImage(image, frame.x, frame.y, frame.width, frame.height,
+        (canvas.width - width) / 2, 585 - height, width, height);
+      frameLabel.textContent = `${current + 1} / ${frames.length}`;
+    }
+
+    function selectReaction(index) {
+      const [file, label] = reactions[index];
+      selectedReaction = index;
+      choices.querySelectorAll('button').forEach((button, position) => {
+        button.setAttribute('aria-pressed', String(position === index));
+      });
+      canvas.setAttribute('aria-label', `${style === 'sporty-bob' ? '스포티 단발' : '긴 검은 머리'} ${label} 반응 애니메이션`);
+      const id = ++requestId;
+      image = null;
+      frames = [];
+      current = 0;
+      const nextImage = new Image();
+      nextImage.onload = () => {
+        if (id !== requestId) return;
+        image = nextImage;
+        frames = extractFrames(nextImage);
+        last = performance.now();
+        draw();
+      };
+      nextImage.onerror = () => { if (id === requestId) frameLabel.textContent = '이미지 오류'; };
+      nextImage.src = `/sprites/${style}/${file}.png`;
+    }
+
+    styleButtons.forEach((button) => button.addEventListener('click', () => {
+      style = button.dataset.style;
+      styleButtons.forEach((option) => option.setAttribute('aria-pressed', String(option === button)));
+      selectReaction(selectedReaction);
+    }));
+
+    reactions.forEach(([file, label], index) => {
+      const button = document.createElement('button');
+      button.className = 'choice';
+      button.type = 'button';
+      button.textContent = label;
+      button.setAttribute('aria-pressed', 'false');
+      button.addEventListener('click', () => selectReaction(index));
+      choices.append(button);
+    });
+    function updateButton() {
+      toggle.textContent = playing ? '일시정지' : '재생';
+      toggle.setAttribute('aria-pressed', String(playing));
+    }
+    function tick(now) {
+      if (playing && frames.length && now - last >= 1000 / Number(speed.value)) {
+        current = (current + 1) % frames.length;
+        draw();
+        last = now;
+      }
+      requestAnimationFrame(tick);
+    }
+    toggle.addEventListener('click', () => { playing = !playing; last = performance.now(); updateButton(); });
+    speed.addEventListener('input', () => { fps.value = `${speed.value} FPS`; });
+    document.addEventListener('visibilitychange', () => { last = performance.now(); });
+    updateButton();
+    selectReaction(0);
+    requestAnimationFrame(tick);
+  </script>
+</body>
+</html>

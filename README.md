@@ -14,6 +14,12 @@ node server.mjs
 
 Open <http://127.0.0.1:4173>. Without an API key, the page uses a local example calculation based on the selected action and sliders. The text field affects Jev mode only.
 
+The crying character animation preview is at <http://127.0.0.1:4173/sprite-preview.html>. It plays the four-frame sprite sheet and lets you adjust the speed.
+
+The long-haired and sporty bob-haired female characters each have 16 reaction sheets under `sprites/female/` and `sprites/sporty-bob/`, with four frames per PNG. Switch between them and play the animations at <http://127.0.0.1:4173/female-sprite-preview.html>. The reactions cover idle, smile, laugh, shy, excited, curious, surprised, thinking, uncertain, nervous, uncomfortable, annoyed, sad, crying, waving, and turning away.
+
+The [3D avatar research note](docs/avatar-glb-research.md) records GLB and VRM options, asset licenses, what was tested, and open limits. Two reproducible viewers and their model files are under [experiments/avatar-glb/](experiments/avatar-glb/): a generated face GLB with expression sliders and a VRoid sample with expressions and body motion.
+
 To try live Jev responses, set `TYPESAFE_API_KEY` in your shell before starting the server. The key stays on the local server and is never sent to the browser. Live requests use TypeSafe's `jev-1.13.0` model and may incur API charges.
 
 ## Scope

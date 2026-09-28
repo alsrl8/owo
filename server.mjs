@@ -5,6 +5,9 @@ import { fileURLToPath } from 'node:url';
 const host = '127.0.0.1';
 const port = Number(process.env.PORT || 4173);
 const htmlPath = fileURLToPath(new URL('./index.html', import.meta.url));
+const spritePreviewPath = fileURLToPath(new URL('./sprite-preview.html', import.meta.url));
+const cryingSpritePath = fileURLToPath(new URL('./crying-sprite-sheet.png', import.meta.url));
+const femaleSpritePreviewPath = fileURLToPath(new URL('./female-sprite-preview.html', import.meta.url));
 const apiKey = process.env.TYPESAFE_API_KEY;
 const cache = new Map();
 const actions = new Set(['hello', 'coffee', 'honest', 'wait']);
@@ -26,6 +29,29 @@ async function readJson(request) {
 const server = http.createServer(async (request, response) => {
   if (request.method === 'GET' && request.url === '/') {
     send(response, 200, await readFile(htmlPath, 'utf8'), 'text/html; charset=utf-8');
+    return;
+  }
+  if (request.method === 'GET' && request.url === '/sprite-preview.html') {
+    send(response, 200, await readFile(spritePreviewPath, 'utf8'), 'text/html; charset=utf-8');
+    return;
+  }
+  if (request.method === 'GET' && request.url === '/female-sprite-preview.html') {
+    send(response, 200, await readFile(femaleSpritePreviewPath, 'utf8'), 'text/html; charset=utf-8');
+    return;
+  }
+  if (request.method === 'GET' && request.url === '/crying-sprite-sheet.png') {
+    send(response, 200, await readFile(cryingSpritePath), 'image/png');
+    return;
+  }
+  if (request.method === 'GET' && /^\/sprites\/(?:female|sporty-bob)\/(?:0[1-9]|1[0-6])-[a-z-]+\.png$/.test(request.url)) {
+    const style = request.url.split('/')[2];
+    const filename = request.url.split('/').at(-1);
+    const path = fileURLToPath(new URL(`./sprites/${style}/${filename}`, import.meta.url));
+    try {
+      send(response, 200, await readFile(path), 'image/png');
+    } catch {
+      send(response, 404, { error: 'Not found' });
+    }
     return;
   }
   if (request.method === 'GET' && request.url === '/api/status') {
