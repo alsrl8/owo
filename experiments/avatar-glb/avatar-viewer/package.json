@@ -1,0 +1,15 @@
+{
+  "name": "owo-avatar-viewer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build && node scripts/minify.mjs"
+  },
+  "dependencies": {
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "vite": "^7.0.0"
+  }
+}

@@ -16,10 +16,12 @@
     .stage{display:grid;grid-template-columns:158px 1fr;gap:24px;align-items:center;margin-top:24px}.drag-source{height:252px;background:#fcf7fb;border:1px dashed #eccdd9;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;position:relative}.drag-source:after{content:"↗";position:absolute;top:14px;right:15px;color:#cfa6ba;font-size:17px}.person{width:100px;height:112px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;touch-action:none;cursor:grab;user-select:none;filter:drop-shadow(0 11px 13px #a583a338);z-index:2}.person:active{cursor:grabbing}.person .head{width:65px;height:65px;border-radius:49% 49% 45% 45%;background:#ffd8c6;border:3px solid #473047;position:relative;z-index:2;overflow:hidden}.person .hair{position:absolute;left:-3px;top:-6px;width:68px;height:28px;border-radius:50% 46% 35% 25%;background:#4b3548;transform:rotate(-6deg)}.person .hair:after{content:"";position:absolute;left:39px;top:13px;width:27px;height:22px;border-radius:50%;background:#4b3548}.person .eyes{position:absolute;left:16px;top:35px;width:29px;display:flex;justify-content:space-between}.person .eyes:before,.person .eyes:after{content:"";background:#503b4b;width:5px;height:7px;border-radius:50%}.person .smile{position:absolute;left:27px;top:47px;width:11px;height:5px;border-bottom:2px solid #b66d73;border-radius:50%}.person .body{width:83px;height:53px;margin-top:-8px;border:3px solid #473047;border-bottom:0;border-radius:40px 40px 7px 7px;background:#8872b3}.source-label{font-size:12px;font-weight:800;color:#7a647b}.source-sub{font-size:11px;color:#a89aa9}.drag-ghost{position:fixed;pointer-events:none;z-index:100;transform:translate(-50%,-50%) rotate(-7deg);opacity:.95}
     .actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.action{min-height:118px;border:1.5px solid #eee6ec;background:#fff;border-radius:18px;text-align:left;padding:16px 17px;transition:transform .16s,border-color .16s,background .16s,box-shadow .16s}.action:hover,.action.preview{transform:translateY(-3px);border-color:#e87998;background:#fff8fa;box-shadow:0 12px 24px #dd769121}.action.selected{border-color:#db6d8b;background:#fff4f7;box-shadow:inset 0 0 0 1px #db6d8b}.action .icon{font-size:23px;display:block;margin-bottom:8px}.action strong{display:block;font-size:14px;letter-spacing:-.03em}.action small{display:block;color:#a59aa5;font-size:11px;margin-top:5px}.drag-note{color:#a89aa9;font-size:11px;margin-top:15px;text-align:center}
     .reaction{margin-top:20px;padding:23px 27px 26px;display:grid;grid-template-columns:250px 1fr 255px;gap:22px;align-items:center}.reaction-title{align-self:stretch;display:flex;flex-direction:column;justify-content:center}.reaction-title h2{font-size:21px;letter-spacing:-.055em;margin:8px 0 9px}.reaction-title p{font-size:13px;line-height:1.6;color:#968a97;margin:0}.reaction-title .selected-action{display:inline-block;color:#cf6482;font-weight:800}
-    .avatar-area{display:flex;gap:22px;align-items:center;justify-content:center}.avatar-halo{width:145px;height:145px;border-radius:50%;background:#fff0e8;display:grid;place-items:center;transition:background .3s}.avatar{height:120px;width:116px;border-radius:48% 48% 46% 46%;background:#ffcfb8;position:relative;box-shadow:inset -8px -8px 0 #f5bfae,0 8px 0 #e8a28d;transition:transform .3s}.avatar .hair{position:absolute;top:-7px;left:-5px;width:124px;height:61px;border-radius:56% 48% 38% 35%;background:#392e41;z-index:1}.avatar .hair:after{content:"";position:absolute;right:-2px;top:24px;width:21px;height:66px;border-radius:16px;background:#392e41}.avatar .face{position:absolute;inset:0;z-index:2}.avatar .eye{position:absolute;top:66px;width:9px;height:11px;background:#403040;border-radius:50%;transition:all .25s}.avatar .eye.left{left:32px}.avatar .eye.right{right:31px}.avatar .mouth{position:absolute;left:48px;top:83px;width:21px;height:12px;border-bottom:3px solid #a44f65;border-radius:50%;transition:all .25s}.avatar .blush{position:absolute;top:79px;width:22px;height:10px;border-radius:50%;background:#f39c9d;opacity:.7;filter:blur(2px)}.avatar .blush.left{left:13px}.avatar .blush.right{right:12px}.avatar-area[data-emotion="warm"] .avatar{transform:rotate(5deg)}.avatar-area[data-emotion="warm"] .eye{height:7px;border-radius:2px 2px 8px 8px;background:transparent;border-bottom:3px solid #403040}.avatar-area[data-emotion="warm"] .mouth{height:16px;border-bottom-width:4px}.avatar-area[data-emotion="neutral"] .avatar-halo{background:#f2edfb}.avatar-area[data-emotion="neutral"] .avatar{transform:rotate(-3deg)}.avatar-area[data-emotion="neutral"] .mouth{width:16px;left:50px;top:91px;height:1px;border-bottom:3px solid #a44f65;border-radius:0}.avatar-area[data-emotion="neutral"] .blush{opacity:.35}.avatar-area[data-emotion="overwhelmed"] .avatar-halo{background:#ebedf7}.avatar-area[data-emotion="overwhelmed"] .avatar{transform:rotate(-6deg)}.avatar-area[data-emotion="overwhelmed"] .eye{height:12px;top:65px}.avatar-area[data-emotion="overwhelmed"] .mouth{height:9px;top:88px;border-bottom:0;border-top:3px solid #a44f65}.avatar-area[data-emotion="overwhelmed"] .blush{opacity:.1}.emotion-copy{min-width:128px}.emotion-copy strong{display:block;font-size:20px;letter-spacing:-.05em}.emotion-copy span{display:block;color:#9e929e;font-size:12px;line-height:1.5;margin-top:7px}
+    .avatar-picker{grid-column:1/-1;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-bottom:16px;border-bottom:1px solid #f1e8ef}.avatar-picker-label{font-size:12px;font-weight:800;color:#877b88;margin-right:6px}.avatar-option{border:1px solid #eadce5;border-radius:13px;background:#fff;color:#665866;padding:8px 12px;text-align:left}.avatar-option strong{display:block;font-size:13px}.avatar-option small{display:block;font-size:10px;color:#9b8c9a;margin-top:2px}.avatar-option[aria-pressed="true"]{background:#fff0f5;border-color:#db6d8b;color:#a74163;box-shadow:inset 0 0 0 1px #db6d8b}.avatar-picker a{font-size:11px;color:#aa6882;margin-left:auto}
+    .avatar-area{display:flex;gap:18px;align-items:center;justify-content:center}.avatar-halo{width:188px;height:188px;flex:none;border-radius:50%;background:#fff0e8;position:relative;overflow:hidden;transition:background .3s}.avatar-halo canvas,.avatar-halo #glbAvatar{display:block;width:100%;height:100%}.avatar-halo [hidden]{display:none}#pixelAvatar{image-rendering:pixelated}#glbAvatar canvas{display:block;width:100%;height:100%}.avatar-status{position:absolute;inset:auto 7px 12px;padding:5px 7px;border-radius:9px;background:#ffffffd9;color:#7c6172;font-size:10px;text-align:center}.avatar-area[data-emotion="neutral"] .avatar-halo{background:#f2edfb}.avatar-area[data-emotion="overwhelmed"] .avatar-halo{background:#ebedf7}.emotion-copy{min-width:128px}.emotion-copy strong{display:block;font-size:20px;letter-spacing:-.05em}.emotion-copy span{display:block;color:#9e929e;font-size:12px;line-height:1.5;margin-top:7px}
     .meters{border-left:1px solid #f1e8ef;padding-left:23px}.meters h3{font-size:12px;color:#877b88;margin:0 0 16px}.meter{margin:11px 0}.meter-top{display:flex;justify-content:space-between;color:#786b79;font-size:11px}.meter-top strong{font-size:11px}.bar{height:7px;border-radius:10px;background:#f5eef2;margin-top:7px;overflow:hidden}.bar i{display:block;height:100%;border-radius:10px;transition:width .28s}.meter.warm i{background:#e985a0}.meter.neutral i{background:#aa95c7}.meter.overwhelmed i{background:#8a98ba}.footnote{text-align:center;color:#b2a6b0;font-size:11px;margin:18px auto 0;line-height:1.5}.error{color:#bb496b!important}
     @media(max-width:900px){.workspace{grid-template-columns:1fr}.context{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}.context .intro,.context .field{grid-column:1/-1}.reaction{grid-template-columns:1fr 1fr}.reaction-title{grid-column:1/-1}.meters{min-width:200px}}
     @media(max-width:580px){main{padding:18px 16px 34px}.hero{margin:25px 0}.hero p{line-height:1.5}.context{display:block}.play{padding:22px 18px}.stage{grid-template-columns:1fr;gap:15px;margin-top:14px}.drag-source{height:160px}.person{transform:scale(.75);margin:-16px 0}.actions{gap:9px}.action{min-height:109px;padding:13px}.reaction{grid-template-columns:1fr;padding:22px}.reaction-title{grid-column:auto}.avatar-area{justify-content:flex-start}.meters{border-left:0;border-top:1px solid #f1e8ef;padding:18px 0 0}.helper-pill{display:none}}
+    @media(max-width:580px){.reaction{grid-template-columns:minmax(0,1fr)}.avatar-area{gap:12px}.avatar-halo{width:145px;height:145px}.emotion-copy{min-width:0;flex:1}.emotion-copy strong{font-size:17px}.avatar-picker a{margin-left:0}}
   </style>
 </head>
 <body>
@@ -40,7 +42,25 @@
         </div>
       </section>
     </div>
-    <section class="panel reaction" aria-live="polite"><div class="reaction-title"><div class="section-kicker">♥ IMAGINED REACTION</div><h2>상상 속 상대의 반응</h2><p><span class="selected-action" id="selectedAction">가볍게 안부 묻기</span>를 해본다면?</p></div><div class="avatar-area" id="avatarArea" data-emotion="warm"><div class="avatar-halo"><div class="avatar"><div class="hair"></div><div class="face"><i class="eye left"></i><i class="eye right"></i><i class="blush left"></i><i class="blush right"></i><i class="mouth"></i></div></div></div><div class="emotion-copy"><strong id="emotionLabel">미소가 번져요</strong><span id="emotionDescription">반갑고 편안한 반응일 수 있어요.</span></div></div><div class="meters"><h3>가능한 반응의 비중 <span id="loading"></span></h3><div class="meter warm"><div class="meter-top"><span>😊 반가움</span><strong id="warmValue">–</strong></div><div class="bar"><i id="warmBar"></i></div></div><div class="meter neutral"><div class="meter-top"><span>🤔 생각 중</span><strong id="neutralValue">–</strong></div><div class="bar"><i id="neutralBar"></i></div></div><div class="meter overwhelmed"><div class="meter-top"><span>😳 부담스러움</span><strong id="overwhelmedValue">–</strong></div><div class="bar"><i id="overwhelmedBar"></i></div></div></div></section>
+    <section class="panel reaction" aria-live="polite">
+      <div class="avatar-picker" role="group" aria-label="아바타 스타일 선택">
+        <span class="avatar-picker-label">아바타 스타일</span>
+        <button class="avatar-option" type="button" data-avatar-style="pixel" aria-pressed="true"><strong>도트</strong><small>스포티 단발</small></button>
+        <button class="avatar-option" type="button" data-avatar-style="custom" aria-pressed="false"><strong>직접 만든 GLB</strong><small>미나 · 표정 실험</small></button>
+        <button class="avatar-option" type="button" data-avatar-style="external" aria-pressed="false"><strong>외부 GLB</strong><small>MPFB · CC0 · 36MB</small></button>
+        <a href="/female-sprite-preview.html">도트 16종 보기</a>
+      </div>
+      <div class="reaction-title"><div class="section-kicker">♥ IMAGINED REACTION</div><h2>상상 속 상대의 반응</h2><p><span class="selected-action" id="selectedAction">가볍게 안부 묻기</span>를 해본다면?</p></div>
+      <div class="avatar-area" id="avatarArea" data-emotion="warm">
+        <div class="avatar-halo">
+          <canvas id="pixelAvatar" width="256" height="256" role="img" aria-label="도트 캐릭터 애니메이션"></canvas>
+          <div id="glbAvatar" role="img" aria-label="3D 아바타" hidden></div>
+          <span id="avatarStatus" class="avatar-status" hidden></span>
+        </div>
+        <div class="emotion-copy"><strong id="emotionLabel">미소가 번져요</strong><span id="emotionDescription">반갑고 편안한 반응일 수 있어요.</span></div>
+      </div>
+      <div class="meters"><h3>가능한 반응의 비중 <span id="loading"></span></h3><div class="meter warm"><div class="meter-top"><span>😊 반가움</span><strong id="warmValue">–</strong></div><div class="bar"><i id="warmBar"></i></div></div><div class="meter neutral"><div class="meter-top"><span>🤔 생각 중</span><strong id="neutralValue">–</strong></div><div class="bar"><i id="neutralBar"></i></div></div><div class="meter overwhelmed"><div class="meter-top"><span>😳 부담스러움</span><strong id="overwhelmedValue">–</strong></div><div class="bar"><i id="overwhelmedBar"></i></div></div></div>
+    </section>
     <p class="footnote">실제 상대의 감정이나 미래를 예측하지 않습니다. 데모 수치는 행동과 슬라이더의 예시 계산이며, Jev 연결 시 적은 맥락도 사용합니다.</p>
   </main>
   <script>
@@ -49,7 +69,70 @@
     const $=id=>document.getElementById(id);
     const cards=[...document.querySelectorAll('.action')];
     const person=$('person');
+    const avatarOptions=[...document.querySelectorAll('.avatar-option')];
+    const pixelCanvas=$('pixelAvatar');
+    const pixelContext=pixelCanvas.getContext('2d');
+    const pixelChoices={
+      warm:{hello:'02-smile',coffee:'05-excited',honest:'04-shy',wait:'15-wave'},
+      neutral:{hello:'06-curious',coffee:'09-uncertain',honest:'08-thinking',wait:'01-idle'},
+      overwhelmed:{hello:'10-nervous',coffee:'11-uncomfortable',honest:'07-surprised',wait:'13-sad'}
+    };
+    const prefersReducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const pixelCache=new Map();
+    let avatarStyle='pixel',avatarViewer=null,avatarModule=null,avatarRequestId=0;
+    let pixelFile='',pixelSheet=null,pixelFrame=0,pixelLast=0;
     let selected='hello',preview=null,requestId=0,timer=null,dragging=false,ghost=null;
+
+    function avatarStatus(message){$('avatarStatus').textContent=message;$('avatarStatus').hidden=!message}
+    function drawPixel(){
+      if(!pixelSheet)return;
+      const width=Math.floor(pixelSheet.naturalWidth/2),height=Math.floor(pixelSheet.naturalHeight/2);
+      pixelContext.clearRect(0,0,pixelCanvas.width,pixelCanvas.height);
+      pixelContext.imageSmoothingEnabled=false;
+      pixelContext.drawImage(pixelSheet,(pixelFrame%2)*width,Math.floor(pixelFrame/2)*height,width,height,0,0,pixelCanvas.width,pixelCanvas.height);
+    }
+    function choosePixelSprite(emotion,action){
+      const file=pixelChoices[emotion][action];
+      if(file===pixelFile)return;
+      pixelFile=file;pixelSheet=null;pixelFrame=0;
+      let imagePromise=pixelCache.get(file);
+      if(!imagePromise){
+        imagePromise=new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>resolve(image);image.onerror=reject;image.src=`/sprites/sporty-bob/${file}.png`});
+        pixelCache.set(file,imagePromise);
+      }
+      imagePromise.then(image=>{if(pixelFile!==file)return;pixelSheet=image;drawPixel();avatarStatus('')}).catch(()=>{if(pixelFile===file)avatarStatus('도트 이미지를 불러오지 못했어요')});
+    }
+    function animatePixel(now){
+      if(!prefersReducedMotion&&avatarStyle==='pixel'&&pixelSheet&&now-pixelLast>=180){pixelFrame=(pixelFrame+1)%4;drawPixel();pixelLast=now}
+      requestAnimationFrame(animatePixel);
+    }
+    async function chooseAvatarStyle(next){
+      if(next===avatarStyle)return;
+      avatarStyle=next;
+      const id=++avatarRequestId;
+      avatarOptions.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.avatarStyle===next)));
+      const isPixel=next==='pixel';
+      pixelCanvas.hidden=!isPixel;$('glbAvatar').hidden=isPixel;
+      avatarViewer?.setVisible(!isPixel);
+      if(isPixel){avatarStatus('');choosePixelSprite($('avatarArea').dataset.emotion,preview||selected);return}
+      avatarStatus('3D 모델을 불러오는 중…');
+      try{
+        avatarModule ||= import('/avatar-viewer.js');
+        const {createAvatarViewer}=await avatarModule;
+        if(id!==avatarRequestId)return;
+        avatarViewer ||= createAvatarViewer($('glbAvatar'));
+        avatarViewer.setVisible(true);
+        avatarViewer.setEmotion($('avatarArea').dataset.emotion);
+        await avatarViewer.setStyle(next);
+        if(id===avatarRequestId)avatarStatus('');
+      }catch(error){
+        if(id===avatarRequestId)avatarStatus('3D 모델을 불러오지 못했어요');
+        if(!avatarViewer)avatarModule=null;
+        console.error(error);
+      }
+    }
+    avatarOptions.forEach(button=>button.addEventListener('click',()=>chooseAvatarStyle(button.dataset.avatarStyle)));
+    requestAnimationFrame(animatePixel);
 
     function input(){return {action:preview||selected,context:$('context').value,closeness:Number($('closeness').value),recentTalk:Number($('recentTalk').value),bandwidth:Number($('bandwidth').value)}}
     function demoReaction(data){
@@ -68,6 +151,8 @@
       const emotion=Object.keys(values).sort((a,b)=>values[b]-values[a])[0];
       $('avatarArea').dataset.emotion=emotion;
       $('emotionLabel').textContent=emotions[emotion][0];$('emotionDescription').textContent=emotions[emotion][1];
+      if(avatarStyle==='pixel')choosePixelSprite(emotion,preview||selected);
+      else avatarViewer?.setEmotion(emotion);
     }
     function refresh(immediate=false){
       const data=input();$('selectedAction').textContent=labels[data.action];

@@ -8,12 +8,17 @@ const htmlPath = fileURLToPath(new URL('./index.html', import.meta.url));
 const spritePreviewPath = fileURLToPath(new URL('./sprite-preview.html', import.meta.url));
 const cryingSpritePath = fileURLToPath(new URL('./crying-sprite-sheet.png', import.meta.url));
 const femaleSpritePreviewPath = fileURLToPath(new URL('./female-sprite-preview.html', import.meta.url));
+const avatarViewerPath = fileURLToPath(new URL('./assets/viewer/avatar-viewer.js', import.meta.url));
+const avatarModels = {
+  '/avatar-models/mina-face.glb': fileURLToPath(new URL('./experiments/avatar-glb/custom-face/public/models/mina-face.glb', import.meta.url)),
+  '/avatar-models/mpfb.glb': fileURLToPath(new URL('./assets/models/mpfb.glb', import.meta.url)),
+};
 const apiKey = process.env.TYPESAFE_API_KEY;
 const cache = new Map();
 const actions = new Set(['hello', 'coffee', 'honest', 'wait']);
 
-function send(response, status, body, type = 'application/json; charset=utf-8') {
-  response.writeHead(status, { 'content-type': type, 'cache-control': 'no-store' });
+function send(response, status, body, type = 'application/json; charset=utf-8', cacheControl = 'no-store') {
+  response.writeHead(status, { 'content-type': type, 'cache-control': cacheControl });
   response.end(type.startsWith('application/json') ? JSON.stringify(body) : body);
 }
 
@@ -41,6 +46,14 @@ const server = http.createServer(async (request, response) => {
   }
   if (request.method === 'GET' && request.url === '/crying-sprite-sheet.png') {
     send(response, 200, await readFile(cryingSpritePath), 'image/png');
+    return;
+  }
+  if (request.method === 'GET' && request.url === '/avatar-viewer.js') {
+    send(response, 200, await readFile(avatarViewerPath), 'text/javascript; charset=utf-8');
+    return;
+  }
+  if (request.method === 'GET' && avatarModels[request.url]) {
+    send(response, 200, await readFile(avatarModels[request.url]), 'model/gltf-binary', 'public, max-age=3600');
     return;
   }
   if (request.method === 'GET' && /^\/sprites\/(?:female|sporty-bob)\/(?:0[1-9]|1[0-6])-[a-z-]+\.png$/.test(request.url)) {
