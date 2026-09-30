@@ -1,4 +1,5 @@
 import http from 'node:http';
+import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
@@ -92,8 +93,7 @@ const server = http.createServer(async (request, response) => {
       return;
     }
 
-    // Free-text context and MBTI stay local until external sharing is explicitly approved.
-    const key = JSON.stringify({ action, closeness, recentTalk, bandwidth });
+    const key = createHash('sha256').update(JSON.stringify(input)).digest('hex');
     if (cache.has(key)) {
       send(response, 200, cache.get(key));
       return;
@@ -108,6 +108,10 @@ const server = http.createServer(async (request, response) => {
         body: JSON.stringify({
           model: 'jev-1.13.0',
           state: {
+            current_situation: context.currentSituation || 'Not provided.',
+            previous_direct_experiences: context.pastExperiences || 'Not provided.',
+            recent_observations_from_messages_or_social_media: context.recentObservations || 'Not provided.',
+            mbti_if_self_reported: mbti || 'Unknown.',
             action_under_consideration: {
               hello: 'Send a light, friendly message',
               coffee: 'Suggest meeting for coffee',
@@ -121,7 +125,7 @@ const server = http.createServer(async (request, response) => {
           questions: {
             reaction: {
               type: 'choice',
-              instructions: 'Given only the supplied action and slider values, which immediate reaction is most plausible? Treat missing evidence as uncertainty. This is a scenario estimate, not a prediction of a real person.',
+              instructions: 'Given only the supplied context, which immediate reaction is most plausible? Give direct past interactions more weight than social-media observations. Do not infer private feelings from posts. Treat MBTI as a weak communication-style hint, never as a deterministic emotion rule. Treat missing evidence as uncertainty. This is a scenario estimate, not a prediction of a real person.',
               criteria: {
                 warm: 'Warm, interested, or pleased',
                 neutral: 'Uncertain, reserved, or needs time',

@@ -12,7 +12,7 @@ Requires Node.js 20 or newer. No packages to install.
 node server.mjs
 ```
 
-Open <http://127.0.0.1:4173>. Without an API key, the page uses a local example calculation based on the selected action and sliders. The context fields and optional MBTI selector are currently for drafting scenarios; neither the example calculation nor Jev uses them, and their text is not forwarded to the external API.
+Open <http://127.0.0.1:4173>. Without an API key, the page uses a local example calculation based on the selected action and sliders. With a Jev API key, the context fields and optional MBTI selector are included in the request to TypeSafe.
 
 The reaction card lets you switch between a pixel sprite, our generated face GLB, and the [CC0 MPFB external GLB](assets/models/README.md). The 3D models load when selected; the external model is 36 MB. Actions and context controls update the displayed reaction in all three styles.
 
@@ -31,9 +31,9 @@ To try live Jev responses, set `TYPESAFE_API_KEY` in your shell before starting 
 ## Scope
 
 - Drag the person icon over an action to preview the expression; release to select it. Click or tap an action as an alternative.
-- Enter current situation, prior experiences, recent conversations or social posts, and optionally a self-reported MBTI type. These fields do not affect the current reaction calculation.
+- Enter current situation, prior experiences, recent conversations or social posts, and optionally a self-reported MBTI type. These fields affect Jev mode; demo mode still uses only the action and sliders.
 - Adjust closeness, recent conversation, and the other person's availability.
-- Jev mode sends the action and three sliders with one Choice question to the TypeSafe API. It does not send free-text context or MBTI. The server caches identical requests in memory for the current session.
+- Jev mode sends the action, three sliders, three free-text context fields, and optional MBTI with one Choice question to the TypeSafe API. The server caches identical requests in memory for the current session.
 - This UI explores hypothetical reactions. It cannot predict a real person's feelings or behavior.
 
 The avatar, interaction design, and context controls are initial concept placeholders.

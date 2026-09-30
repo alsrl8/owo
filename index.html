@@ -30,11 +30,11 @@
     <section class="hero"><div class="eyebrow">WHAT IF, BETWEEN US?</div><h1>만약 내가 이렇게 한다면?</h1><p>나를 행동 위로 끌어 보세요. 아래 표정이 상황에 따라 달라져요.</p></section>
     <div class="workspace">
       <aside class="panel context">
-        <div class="intro"><div class="section-kicker">✦ OUR CONTEXT</div><h2>우리 사이의 맥락</h2><p class="hint">상황을 나눠 적어 보세요. 현재 반응 계산은 행동과 슬라이더만 사용해요.</p></div>
+        <div class="intro"><div class="section-kicker">✦ OUR CONTEXT</div><h2>우리 사이의 맥락</h2><p class="hint">상황을 나눠 적어 보세요. Jev 연결 시 입력한 내용이 TypeSafe API로 전송돼요.</p></div>
         <div class="field"><label for="currentSituation">현재 상태</label><textarea id="currentSituation" maxlength="1000" placeholder="예: 이번 주는 일이 바빠 보이고, 오늘은 서로 연락하지 않았어요.">이번 주는 일이 바빠 보이고, 오늘은 서로 연락하지 않았어요.</textarea></div>
         <div class="field"><label for="pastExperiences">이전 경험</label><textarea id="pastExperiences" maxlength="1000" placeholder="예: 지난주 함께 점심을 먹었고, 상대도 먼저 대화를 시작한 적이 있어요.">지난주 함께 점심을 먹었고, 상대도 먼저 대화를 시작한 적이 있어요.</textarea></div>
         <div class="field"><label for="recentObservations">최근 대화·인스타에서 본 것</label><textarea id="recentObservations" maxlength="1000" placeholder="예: 어제 여행 사진을 올렸어요. 의미 추측보다 본 사실을 적어 주세요."></textarea><small class="field-note">게시물은 상대의 속마음을 확인해 주지 않아요.</small></div>
-        <div class="field"><label for="mbti">상대의 MBTI · 선택</label><select id="mbti"><option value="">모름 / 입력하지 않음</option><option>ISTJ</option><option>ISFJ</option><option>INFJ</option><option>INTJ</option><option>ISTP</option><option>ISFP</option><option>INFP</option><option>INTP</option><option>ESTP</option><option>ESFP</option><option>ENFP</option><option>ENTP</option><option>ESTJ</option><option>ESFJ</option><option>ENFJ</option><option>ENTJ</option></select><small class="field-note">직접 들은 유형만 입력하세요. 현재 반응 계산에는 사용하지 않아요.</small></div>
+        <div class="field"><label for="mbti">상대의 MBTI · 선택</label><select id="mbti"><option value="">모름 / 입력하지 않음</option><option>ISTJ</option><option>ISFJ</option><option>INFJ</option><option>INTJ</option><option>ISTP</option><option>ISFP</option><option>INFP</option><option>INTP</option><option>ESTP</option><option>ESFP</option><option>ENFP</option><option>ENTP</option><option>ESTJ</option><option>ESFJ</option><option>ENFJ</option><option>ENTJ</option></select><small class="field-note">직접 들은 유형만 입력하세요. Jev에서 약한 성향 힌트로 사용해요.</small></div>
         <div class="slider"><div class="slider-head"><label for="closeness">현재 친밀도</label><output id="closenessValue">58</output></div><input id="closeness" type="range" min="0" max="100" value="58"><div class="ends"><span>아직 낯설어요</span><span>꽤 가까워요</span></div></div>
         <div class="slider"><div class="slider-head"><label for="recentTalk">최근 대화 분위기</label><output id="recentTalkValue">72</output></div><input id="recentTalk" type="range" min="0" max="100" value="72"><div class="ends"><span>조금 어색했어요</span><span>서로 편했어요</span></div></div>
         <div class="slider"><div class="slider-head"><label for="bandwidth">상대의 여유</label><output id="bandwidthValue">60</output></div><input id="bandwidth" type="range" min="0" max="100" value="60"><div class="ends"><span>바빠 보여요</span><span>여유 있어 보여요</span></div></div>
@@ -64,7 +64,7 @@
       </div>
       <div class="meters"><h3>가능한 반응의 비중 <span id="loading"></span></h3><div class="meter warm"><div class="meter-top"><span>😊 반가움</span><strong id="warmValue">–</strong></div><div class="bar"><i id="warmBar"></i></div></div><div class="meter neutral"><div class="meter-top"><span>🤔 생각 중</span><strong id="neutralValue">–</strong></div><div class="bar"><i id="neutralBar"></i></div></div><div class="meter overwhelmed"><div class="meter-top"><span>😳 부담스러움</span><strong id="overwhelmedValue">–</strong></div><div class="bar"><i id="overwhelmedBar"></i></div></div></div>
     </section>
-    <p class="footnote">실제 상대의 감정이나 미래를 예측하지 않습니다. 현재는 데모·Jev 모두 행동과 슬라이더만 계산에 사용하며, 적은 글과 MBTI는 외부 API로 보내지 않습니다.</p>
+    <p class="footnote">실제 상대의 감정이나 미래를 예측하지 않습니다. 데모 계산은 행동과 슬라이더만 사용합니다. Jev 연결 시 입력한 맥락과 MBTI가 TypeSafe API로 전송됩니다.</p>
   </main>
   <script>
     const labels={hello:'가볍게 안부 묻기',coffee:'커피 한잔 제안하기',honest:'마음 솔직히 전하기',wait:'하루 여유 주기'};
@@ -157,7 +157,7 @@
       if(avatarStyle==='pixel')choosePixelSprite(emotion,preview||selected);
       else avatarViewer?.setEmotion(emotion);
     }
-    function refresh(immediate=false){
+    function refresh(immediate=false,delay=260){
       const data=input();$('selectedAction').textContent=labels[data.action];
       cards.forEach(card=>{card.classList.toggle('selected',card.dataset.action===selected);card.classList.toggle('preview',card.dataset.action===preview)});
       render(demoReaction(data));
@@ -171,11 +171,12 @@
           if(result.mode==='live')render(result.probabilities);
           $('loading').textContent=result.mode==='live'?' · Jev':' · 데모';
         }catch(error){if(id!==requestId)return;$('loading').textContent=' · '+error.message;$('loading').classList.add('error')}
-      },immediate?0:260);
+      },immediate?0:delay);
     }
     for(const card of cards){card.addEventListener('click',()=>{selected=card.dataset.action;preview=null;refresh(true)});card.addEventListener('pointerenter',()=>{if(!dragging)return;preview=card.dataset.action;refresh()})}
     for(const id of ['closeness','recentTalk','bandwidth'])$(id).addEventListener('input',()=>{$(id+'Value').textContent=$(id).value;refresh()});
-    for(const id of ['currentSituation','pastExperiences','recentObservations','mbti'])$(id).addEventListener('input',()=>refresh());
+    for(const id of ['currentSituation','pastExperiences','recentObservations'])$(id).addEventListener('input',()=>refresh(false,900));
+    $('mbti').addEventListener('change',()=>refresh());
     person.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();cards[0].focus()}});
     person.addEventListener('pointerdown',event=>{
       if(event.button!==0)return;event.preventDefault();dragging=true;person.setPointerCapture(event.pointerId);
