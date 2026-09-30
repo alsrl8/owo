@@ -1,4 +1,5 @@
 import http from 'node:http';
+import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
@@ -8,12 +9,17 @@ const htmlPath = fileURLToPath(new URL('./index.html', import.meta.url));
 const spritePreviewPath = fileURLToPath(new URL('./sprite-preview.html', import.meta.url));
 const cryingSpritePath = fileURLToPath(new URL('./crying-sprite-sheet.png', import.meta.url));
 const femaleSpritePreviewPath = fileURLToPath(new URL('./female-sprite-preview.html', import.meta.url));
+const avatarViewerPath = fileURLToPath(new URL('./assets/viewer/avatar-viewer.js', import.meta.url));
+const avatarModels = {
+  '/avatar-models/mina-face.glb': fileURLToPath(new URL('./experiments/avatar-glb/custom-face/public/models/mina-face.glb', import.meta.url)),
+  '/avatar-models/mpfb.glb': fileURLToPath(new URL('./assets/models/mpfb.glb', import.meta.url)),
+};
 const apiKey = process.env.TYPESAFE_API_KEY;
 const cache = new Map();
 const actions = new Set(['hello', 'coffee', 'honest', 'wait']);
 
-function send(response, status, body, type = 'application/json; charset=utf-8') {
-  response.writeHead(status, { 'content-type': type, 'cache-control': 'no-store' });
+function send(response, status, body, type = 'application/json; charset=utf-8', cacheControl = 'no-store') {
+  response.writeHead(status, { 'content-type': type, 'cache-control': cacheControl });
   response.end(type.startsWith('application/json') ? JSON.stringify(body) : body);
 }
 
@@ -43,6 +49,14 @@ const server = http.createServer(async (request, response) => {
     send(response, 200, await readFile(cryingSpritePath), 'image/png');
     return;
   }
+  if (request.method === 'GET' && request.url === '/avatar-viewer.js') {
+    send(response, 200, await readFile(avatarViewerPath), 'text/javascript; charset=utf-8');
+    return;
+  }
+  if (request.method === 'GET' && avatarModels[request.url]) {
+    send(response, 200, await readFile(avatarModels[request.url]), 'model/gltf-binary', 'public, max-age=3600');
+    return;
+  }
   if (request.method === 'GET' && /^\/sprites\/(?:female|sporty-bob)\/(?:0[1-9]|1[0-6])-[a-z-]+\.png$/.test(request.url)) {
     const style = request.url.split('/')[2];
     const filename = request.url.split('/').at(-1);
@@ -65,8 +79,11 @@ const server = http.createServer(async (request, response) => {
 
   try {
     const input = await readJson(request);
-    const { action, context, closeness, recentTalk, bandwidth } = input;
-    if (!actions.has(action) || typeof context !== 'string' || context.length > 3000 ||
+    const { action, context, mbti, closeness, recentTalk, bandwidth } = input;
+    const contextFields = ['currentSituation', 'pastExperiences', 'recentObservations'];
+    if (!actions.has(action) || !context || typeof context !== 'object' || Array.isArray(context) ||
+        !contextFields.every((field) => typeof context[field] === 'string' && context[field].length <= 1000) ||
+        typeof mbti !== 'string' || (mbti !== '' && !/^[EI][NS][TF][JP]$/.test(mbti)) ||
         ![closeness, recentTalk, bandwidth].every((value) => Number.isInteger(value) && value >= 0 && value <= 100)) {
       send(response, 400, { error: '입력값을 확인해 주세요.' });
       return;
@@ -76,7 +93,7 @@ const server = http.createServer(async (request, response) => {
       return;
     }
 
-    const key = JSON.stringify(input);
+    const key = createHash('sha256').update(JSON.stringify(input)).digest('hex');
     if (cache.has(key)) {
       send(response, 200, cache.get(key));
       return;
@@ -91,7 +108,10 @@ const server = http.createServer(async (request, response) => {
         body: JSON.stringify({
           model: 'jev-1.13.0',
           state: {
-            relationship_context: context || 'No extra context provided.',
+            current_situation: context.currentSituation || 'Not provided.',
+            previous_direct_experiences: context.pastExperiences || 'Not provided.',
+            recent_observations_from_messages_or_social_media: context.recentObservations || 'Not provided.',
+            mbti_if_self_reported: mbti || 'Unknown.',
             action_under_consideration: {
               hello: 'Send a light, friendly message',
               coffee: 'Suggest meeting for coffee',
@@ -105,7 +125,7 @@ const server = http.createServer(async (request, response) => {
           questions: {
             reaction: {
               type: 'choice',
-              instructions: 'Given only the supplied context, which immediate reaction is most plausible? Treat missing evidence as uncertainty. This is a scenario estimate, not a prediction of a real person.',
+              instructions: 'Given only the supplied context, which immediate reaction is most plausible? Give direct past interactions more weight than social-media observations. Do not infer private feelings from posts. Treat MBTI as a weak communication-style hint, never as a deterministic emotion rule. Treat missing evidence as uncertainty. This is a scenario estimate, not a prediction of a real person.',
               criteria: {
                 warm: 'Warm, interested, or pleased',
                 neutral: 'Uncertain, reserved, or needs time',
